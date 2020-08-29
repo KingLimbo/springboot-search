@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.limbo.search.sys.dao.CensusDao">
+
+    <!-- 角色数量 -->
+    <select id="getRoleCount" resultType="Integer">
+        SELECT COUNT(id) FROM zxcms_role
+    </select>
+
+    <!-- 用户数量 -->
+    <select id="getUserCount" resultType="Integer">
+        SELECT COUNT(id) FROM zxcms_user
+    </select>
+
+    <!--用户类型数量 -->
+    <select id="getUserTypeCount" resultType="java.util.Map">
+        SELECT
+            case status
+                when 0 then '离职'
+                when 1 then '实习'
+                when 2 then '在职'
+                else
+                    '实习'
+                end
+                as type,
+            COUNT(id) as count FROM zxcms_user GROUP BY status
+    </select>
+
+    <!-- 角色用户数量 -->
+    <select id="getRoleUserCount" resultType="java.util.Map">
+        SELECT r.`name` as roleName, u.count as count FROM (
+                                           SELECT role_id,COUNT(id)as count FROM zxcms_user GROUP BY role_id
+                                       )u LEFT JOIN zxcms_role r ON r.id=u.role_id
+    </select>
+
+    <!--系统访问率 -->
+    <select id="getUserVisitRate" resultType="java.util.Map">
+        SELECT DATE_FORMAT(FROM_UNIXTIME(add_time),'%Y-%m-%d') as times, COUNT(id) as count FROM zxcms_log GROUP BY DATE_FORMAT(FROM_UNIXTIME(add_time),'%Y-%m-%d') ORDER BY times DESC LIMIT 15
+    </select>
+</mapper>

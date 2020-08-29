@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.limbo.search.sys.dao.UserRelDao">
+	
+	<!-- 增加 -->
+	<insert id="insertUserRel">
+		insert zxcms_user_rel(`u_id`, `t_id`)values(#{uid}, #{tid})
+	</insert>
+	
+	<!-- 查询 -->
+	<select id="getUserRelListByUid" resultType="com.limbo.search.sys.po.UserRel">
+		select * from zxcms_user_rel where `u_id`=#{#id}
+	</select>
+	
+	<!-- 删除 -->
+	<delete id="deleteUserRelByUid">
+		delete from zxcms_user_rel where `u_id`=#{#id}
+	</delete>
+	
+</mapper>

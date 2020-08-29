@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.limbo.search.sh.dao.Search0201Mapper">
+    <!--查询表-->
+    <select id="selectTables" resultType="Search0201ResultVO">
+        SELECT
+            TABLE_SCHEMA AS `schame`,
+            TABLE_NAME AS `table`,
+            CASE
+                WHEN TABLE_COMMENT IS NULL THEN TABLE_NAME
+                WHEN TABLE_COMMENT = '' THEN TABLE_NAME
+                ELSE TABLE_COMMENT
+            END AS `tableName`
+        FROM
+            information_schema.`TABLES`
+        WHERE
+            TABLE_SCHEMA = #{schame}
+    </select>
+
+    <!--查询字段-->
+    <select id="selectCloumns" resultType="Search0201ResultVO">
+        SELECT
+            TABLE_SCHEMA AS `schame`,
+            TABLE_NAME AS `table`,
+            COLUMN_NAME AS `cloumn`,
+            COLUMN_COMMENT AS `cloumnName`,
+            DATA_TYPE AS `dataType`
+        FROM
+            information_schema.`COLUMNS`
+        WHERE
+            TABLE_SCHEMA = #{schame}
+            AND TABLE_NAME = #{table}
+    </select>
+
+    <!-- 查询数据 -->
+    <select id="selectData" resultType="java.util.Map">
+        select
+          *
+        from ${schame}.${table}
+        where 1 = 1
+        <if test="queryConditions != null and queryConditions != ''">
+            ${queryConditions}
+        </if>
+    </select>
+</mapper>

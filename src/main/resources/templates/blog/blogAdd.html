@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<title>layuiAdmin 管理员 iframe 框</title>
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	<link rel="stylesheet" th:href="@{/layuiadmin/layui/css/layui.css}" media="all">
+	<link rel="stylesheet" th:href="@{/layuiadmin/style/admin.css}" media="all">
+<script th:src="@{/blog/tinymce/tinymce.min.js}" referrerpolicy="origin"></script>
+</head>
+	
+<body>
+<div class="layui-form" lay-filter="layuiadmin-form-admin" id="layuiadmin-form-admin" style="padding: 20px 30px 0 0;">
+	<div class="layui-form-item">
+		<label class="layui-form-label">标题</label>
+		<div class="layui-input-block">
+		<input type="text" name="title" placeholder="请输入标题" class="layui-input">
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">内容</label>
+		<div class="layui-input-block"><script>tinymce.init({selector: '#content'});</script>
+		  <textarea name="content" id="content"></textarea>
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">图片</label>
+		<div class="layui-input-inline">
+			<button type="button" class="layui-btn layui-btn-primary" id="zx_upload_pic">
+			  <i class="layui-icon"></i>上传图片
+			</button><input class="layui-upload-file" type="file" accept="undefined" name="file">
+			<input type="hidden" name="picture" id="faceFile" class="layui-input">
+		</div>
+	</div>
+	<div class="layui-form-item layui-hide">
+		<input type="button" lay-submit lay-filter="ZX_iframe_submit" id="ZX_iframe_submit" value="确认">
+	</div>
+</div>
+
+<script th:src="@{/layuiadmin/layui/layui.js}"></script>
+<script>
+layui.config({
+	base: '../layuiadmin/' //静态资源所在路径
+}).extend({
+	index: 'lib/index' //主入口模块
+}).use(['index', 'upload', 'form'], function(){
+	var $ = layui.$,
+	upload = layui.upload,
+	form = layui.form;
+
+
+	$("#ZX_iframe_submit").click(function(){
+		 var content = tinyMCE.activeEditor.getContent();
+		 $("#content").val(content);
+	})
+
+	//上传图片
+	upload.render({
+		elem: '#zx_upload_pic',
+		url: '../blog/uploadImage',
+		size: 1024 * 10, //限制文件大小，单位 KB
+		field: 'file',
+		exts: 'jpg|gif|png',
+		done: function(res){
+			if(res.code==0){
+				$("#faceFile").val(res.msg);
+				layer.msg("上传成功");
+			}else{
+				layer.msg(res.msg);
+			}
+		}
+	});
+})
+</script>
+</body>
+</html>

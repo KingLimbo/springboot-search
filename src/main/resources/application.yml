@@ -1,0 +1,62 @@
+server:
+  # 端口号
+  port: 8080
+  # 项目名
+  servlet:
+    context-path: /search
+spring:
+  application:
+    name: search
+  banner:
+    location: banner.txt
+
+  # 数据库配置
+  datasource:
+    url: jdbc:mysql://localhost:3306/search?characterEncoding=utf-8
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.jdbc.Driver
+    password: root
+    username: root
+    initialSize: 5
+    minIdle: 5
+    maxActive: 20
+    maxWait: 6000
+    filters: stat,wall,log4j
+
+  # FTL视图解析器配置
+  freemarker:
+    template-loader-path: classpath:/templates/
+    charset: utf-8
+    cache: false
+    expose-request-attributes: true
+    expose-session-attributes: true
+    expose-spring-macro-helpers: true
+    suffix: .ftl
+    request-context-attribute: request
+
+  # THYF视图解析器配置
+  thymeleaf:
+    cache: false
+
+  # MVC静态资源配置
+#  mvc:
+#    static-path-pattern: /static/**
+#  resources:
+#    static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/
+
+# Mybatis配置
+mybatis:
+  config-location: classpath:mybatis/mybatis-config.xml
+  mapper-locations: classpath:mybatis/mapper/**/*.xml
+  type-aliases-package: com.limbo.search.sh.vo #别名包
+
+
+
+
+###配置打印sql
+########################################################
+logging:
+  level:
+    com.limbo.search.sys.dao: TRACE #包路径为mapper文件包路径
+    com.limbo.search.sh.dao: TRACE #包路径为mapper文件包路径
+    web: INFO
