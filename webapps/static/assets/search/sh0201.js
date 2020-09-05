@@ -103,6 +103,7 @@ var vm = new Vue({
                             var tempTableOptions = Object.create(tableOptions);
                             // 设置表头
                             tempTableOptions.cols = [option];
+                            tempTableOptions.where = null;
                             // 设置条件
                             tempTableOptions.where = {
                                 schame: vm.schame,
@@ -110,15 +111,11 @@ var vm = new Vue({
                             };
                             // 方法渲染：重新渲染
                             tableIns = tableGloabl.render(tempTableOptions);
-                            // // 表格重载
-                            // tableIns.reload(tempTableOptions);
                         } else {
                             var tempTableOptions = Object.create(tableOptions);
                             tempTableOptions.cols = [[]];
                             // 方法渲染：重新渲染
                             tableIns = tableGloabl.render(tempTableOptions);
-                            // // 表格重载
-                            // tableIns.reload(tempTableOptions);
                         }
                         vm.cloumns = tempCloumns;
                         // 清空查询条件
@@ -369,15 +366,6 @@ var vm = new Vue({
                 where : $.jsonParam(paramJson)
                 , page: {
                     curr: 1 //重新从第 1 页开始
-                },
-                done: function(res, curr, count){
-                    var page = this.where.page;
-                    var limit = this.where.limit;
-                    this.where = null;
-                    this.where = {
-                        page : page
-                        ,limit :limit
-                    };
                 }
             };
             //表格重载
@@ -396,15 +384,6 @@ var tableOptions = {
     ]]
     , page: {
         curr: 1 //重新从第 1 页开始
-    }
-    , done: function(res, curr, count){
-        var page = this.where.page;
-        var limit = this.where.limit;
-        this.where = null;
-        this.where = {
-            page : page
-            ,limit :limit
-        };
     }
 };
 
