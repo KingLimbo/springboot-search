@@ -167,6 +167,10 @@ var vm = new Vue({
                 var calculationInput = mySelect.parentNode.nextElementSibling.nextElementSibling.firstChild;
                 // 设置name属性
                 calculationInput.name = mySelect.value;
+                // 禁用项重置
+                for (var i = 0; i < calculationSelect.options.length; i++) {
+                    calculationSelect.options[i].disabled = false;
+                }
                 // 字符
                 if (datatype == "char"
                     || datatype == "varchar"
